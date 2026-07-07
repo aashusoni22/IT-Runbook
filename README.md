@@ -1,67 +1,44 @@
-# Hotel IT Field Assistant
+# IT Floor Assistant
 
-Mobile-first, AI-assisted Next.js knowledge base and troubleshooting assistant for hotel IT support teams.
+A calm, mobile-first troubleshooting coach for a hotel IT technician walking the property. Fast issue
+lookup first, AI as an optional fallback — not the other way around.
 
 ## Features
 
-- AI Assist: describe an issue in plain language and get a triaged, step-by-step fix. Grounded in the
-  property's KB when a match exists (RAG-style, via `/api/assist`), with a structured JSON response
-  (urgency, likely cause, quick fix, steps, commands, escalation, ticket template) and a safe local
-  fallback when OpenAI is unavailable.
-- Urgency triage badges (low/medium/high/critical) so a new tech knows how fast to move.
-- Home screen with the AI Assist box front and center, emergency quick actions, category buttons, and favorites.
-- Supabase-backed `kb_articles` knowledge base with graceful fallback to curated sample data.
-- Search across title, category, symptoms, steps, commands, tags, and notes.
-- Article detail pages for symptoms, quick fix, steps, commands, escalation notes, and ticket templates.
-- Add article form and "Save as KB draft" from an AI Assist result.
-- Favorites through the `is_favorite` boolean.
+- **Home**: one search box plus 8 large issue-category buttons (Payment/POS, Printer, Outlook/Email,
+  Teams/Microsoft 365, MFA/Login, Wi-Fi/Network, Laptop/Device, New User Setup) and an Ask AI tile.
+- **Search**: type a phrase (e.g. "printer offline", "MFA new phone") and get a best-match summary —
+  likely affected layers, the best first question to ask, and Start Flow / Quick Fix / Commands / More
+  Help actions — plus a secondary list of other possible matches.
+- **KB**: browse all issues grouped by category, with a Favorites section at the top (stored in
+  localStorage).
+- **Issue pages** (`/issues/[id]`): do this first, layer-by-layer checks, where to check in
+  Windows/admin portals, commands, when to escalate, a ticket note template, related KB articles, and
+  YouTube search links.
+- **Notes**: quick-capture field notes and anything saved from an issue or an AI answer, stored in
+  localStorage.
+- **Ask AI** (`/ai` + `/api/ai`): optional fallback for issues not yet in the KB. Grounds its answer in
+  the closest KB matches when relevant, and returns a structured, mobile-friendly result — likely causes,
+  top checks, commands/settings, do-not-touch items, when to escalate, and a ticket note. Falls back to a
+  local KB-grounded answer if OpenAI is unavailable.
+- Safety guardrails block guest data, payment data, passwords, internal IPs, server names, and
+  confidential details before they reach the AI, and the AI is instructed to never ask for them either.
 - Light/dark theme toggle.
-- Safety guardrails: blocks guest data, payment data, passwords, internal IPs, and confidential details
-  before they reach the AI.
+
+## Data
+
+The knowledge base is static TypeScript data (`src/lib/kb-data.ts`) — no database required. Favorites
+and notes live in the browser's localStorage (`src/lib/storage.ts`).
 
 ## Environment
 
 Copy `.env.example` to `.env.local` and fill in:
 
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
 OPENAI_API_KEY=
 ```
 
-`SUPABASE_SERVICE_ROLE_KEY` is optional for read-only local exploration, but recommended for draft inserts from API routes.
-
-## Supabase schema
-
-```sql
-create table if not exists kb_articles (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  category text not null,
-  impact text,
-  beginner_summary text,
-  estimated_time text,
-  equipment text[] not null default '{}',
-  symptoms text[] not null default '{}',
-  quick_fix text not null,
-  steps text[] not null default '{}',
-  layers jsonb not null default '[]'::jsonb,
-  navigation_steps jsonb not null default '[]'::jsonb,
-  commands text[] not null default '{}',
-  command_blocks jsonb not null default '[]'::jsonb,
-  escalation_notes text not null default '',
-  ticket_template text not null default '',
-  references jsonb not null default '[]'::jsonb,
-  tags text[] not null default '{}',
-  is_favorite boolean not null default false,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
-create index if not exists kb_articles_favorite_idx on kb_articles (is_favorite);
-create index if not exists kb_articles_updated_at_idx on kb_articles (updated_at desc);
-```
+Without a key, Ask AI still works — it returns a KB-grounded local answer instead of calling OpenAI.
 
 ## Run
 

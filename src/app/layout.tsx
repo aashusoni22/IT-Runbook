@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { BookOpenCheck } from "lucide-react";
+import { Compass } from "lucide-react";
 import { DesktopNav, MobileNav } from "@/components/site-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
@@ -9,8 +9,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Hotel IT Field Assistant",
-  description: "AI-assisted hotel IT troubleshooting knowledge base for Park Hyatt Toronto IT Support."
+  title: "IT Floor Assistant",
+  description: "A calm, step-by-step troubleshooting coach for hotel IT support on the floor."
 };
 
 export const viewport: Viewport = {
@@ -33,10 +33,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <div className="flex items-center justify-between gap-3">
               <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
-                  <BookOpenCheck className="size-5" />
+                  <Compass className="size-5" />
                 </span>
-                <span className="hidden sm:inline">Hotel IT Field Assistant</span>
-                <span className="sm:hidden">IT Assistant</span>
+                <span>IT Floor Assistant</span>
               </Link>
               <div className="flex items-center gap-2">
                 <DesktopNav />

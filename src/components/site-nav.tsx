@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bot, Home, PlusCircle, Search } from "lucide-react";
+import { BookOpen, Home, Search, StickyNote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/assist", label: "AI Assist", icon: Bot },
-  { href: "/articles/new", label: "Add", icon: PlusCircle }
+  { href: "/kb", label: "KB", icon: BookOpen },
+  { href: "/notes", label: "Notes", icon: StickyNote }
 ];
 
 function isActive(pathname: string, href: string) {
