@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 219 58% 20%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 24% 94%;
+    --secondary-foreground: 222 40% 18%;
+    --muted: 214 20% 95%;
+    --muted-foreground: 217 15% 42%;
+    --accent: 38 68% 52%;
+    --accent-foreground: 26 40% 14%;
+    --destructive: 358 68% 46%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 216 20% 88%;
+    --input: 216 20% 88%;
+    --ring: 219 58% 30%;
+    --radius: 1rem;
+
+    --success: 152 45% 32%;
+    --success-foreground: 0 0% 100%;
+    --warning: 36 90% 45%;
+    --warning-foreground: 0 0% 100%;
+    --critical: 358 68% 46%;
+    --critical-foreground: 0 0% 100%;
+
+    --shadow-color: 220 40% 20%;
+  }
+
+  .dark {
+    --background: 222 32% 7%;
+    --foreground: 210 20% 96%;
+    --card: 222 28% 10%;
+    --card-foreground: 210 20% 96%;
+    --primary: 213 70% 62%;
+    --primary-foreground: 222 47% 10%;
+    --secondary: 222 22% 15%;
+    --secondary-foreground: 210 20% 92%;
+    --muted: 222 20% 15%;
+    --muted-foreground: 217 15% 65%;
+    --accent: 38 75% 58%;
+    --accent-foreground: 26 40% 12%;
+    --destructive: 358 72% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 18% 20%;
+    --input: 222 18% 20%;
+    --ring: 213 70% 62%;
+
+    --success: 152 40% 46%;
+    --success-foreground: 0 0% 100%;
+    --warning: 36 85% 55%;
+    --warning-foreground: 26 40% 12%;
+    --critical: 358 72% 58%;
+    --critical-foreground: 0 0% 100%;
+
+    --shadow-color: 220 60% 2%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .soft-shadow {
+    box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 8px 24px -12px hsl(var(--shadow-color) / 0.18);
+  }
+
+  .glow-ring {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.12), 0 12px 32px -14px hsl(var(--primary) / 0.35);
+  }
+
+  .bg-grid {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.06) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  ::selection {
+    background: hsl(var(--accent) / 0.35);
+  }
+}
